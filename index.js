@@ -1,77 +1,74 @@
 const express = require("express");
 const syc = require("syc-logger");
 const app = express();
-const { getCurrentSeason } = require("./functions/index.js");
+const { getCurrentSeason, generateApiKey } = require("./functions/index.js");
+const mongoose = require("mongoose");
 const chalk = require("chalk");
-const bodyParser = require("body-parser");
-const { v4: uuidv4 } = require("uuid");
-const mongodb = require("mongodb");
-
-app.use(bodyParser.json());
-const url = "mongodb://localhost:27017";
-const dbName = "SeasonAPIDB";
-
-mongodb.MongoClient.connect(
-  url,
-  { useUnifiedTopology: true },
-  (error, client) => {
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    const db = client.db(dbName);
-
-    app.post("/api/key", (req, res) => {
-      const apiKey = uuidv4();
-
-      db.collection("apiKeys").insertOne({ apiKey }, (error) => {
-        if (error) {
-          console.log(error);
-          res.sendStatus(500);
-          return;
-        }
-        res.json({ apiKey });
-      });
-    });
-  }
-);
-
-app.use((req, res, next) => {
-  // Check if the API key is present in the request
-  const apiKey = req.headers["x-api-key"] || req.body.apiKey;
-  if (!apiKey) {
-    res.sendStatus(401);
-    return;
-  }
-
-  // Verify the API key against the database
-  db.collection("apiKeys").findOne({ apiKey }, (error, result) => {
-    if (error) {
-      console.log(error);
-      res.sendStatus(500);
-      return;
-    }
-
-    if (!result) {
-      res.sendStatus(401);
-      return;
-    }
-
-    // Allow the request to continue if the API key is valid
-    next();
-  });
-});
 
 app.get("/", (req, res) => {
   res.json({ status: "Success!" });
   res.status(200);
 });
-app.get("/api", (req, res) => {
+
+mongoose
+  .connect(
+    "mongodb+srv://SAPIAuthor:Sohom829@seasonapi.fo1uxqt.mongodb.net/?retryWrites=true&w=majority",
+    { useNewUrlParser: true }
+  )
+  .then(() => console.log("MongoDB connected..."))
+  .catch((err) => console.log(err));
+// Set up a Mongoose model for storing API keys
+const apiKeySchema = new mongoose.Schema({
+  key: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+const ApiKey = mongoose.model("ApiKey", apiKeySchema);
+
+app.get("/api/keys", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
+
+app.post("/api/keys", (req, res) => {
+  const key = generateApiKey();
+  const apiKey = new ApiKey({ key });
+  apiKey.save((err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+    res.send({ key });
+  });
+});
+
+// Middleware function to validate API keys
+function validateApiKey(req, res, next) {
+  const apiKey = req.headers["x-api-key"] || req.query.api_key;
+  if (!apiKey) {
+    return res.status(401).send({ message: "No API key provided" });
+  }
+  ApiKey.findOne({ key: apiKey }, (err, key) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    if (!key) {
+      return res.status(401).send({ message: "Invalid API key" });
+    }
+    next();
+  });
+}
+
+app.get("/api/get-current-season", validateApiKey, (req, res) => {
   res.json({ season: `${getCurrentSeason()}` });
   res.status(200);
 });
-app.get("/api/custom", (req, res) => {
+app.get("/api/get-season/custom", validateApiKey, (req, res) => {
   const month = req.query.month;
 
   let season;
@@ -93,7 +90,7 @@ app.get("/api/custom", (req, res) => {
   res.status(200);
 });
 
-app.listen(3000, () => {
+app.listen(3069, () => {
   syc.logEmoji("Server started", 1, "#FFFFF", "🍂");
   console.log(chalk.bold(syc.logEmojiAsync("API Created.")));
   console.log(
