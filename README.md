@@ -1,2 +1,3 @@
 # SeasonAPI
- An API to get current season or custom season
+
+An API to get current season or custom season
