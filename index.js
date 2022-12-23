@@ -1,23 +1,41 @@
 const express = require("express");
 const syc = require("syc-logger");
 const app = express();
+const { getCurrentSeason } = require("./functions/index.js");
 const chalk = require("chalk");
-const getCurrentSeason = () => {
-  const date = new Date();
-  const month = date.getMonth();
-  let season;
+const bodyParser = require("body-parser");
+const { v4: uuidv4 } = require("uuid");
+const mongodb = require("mongodb");
 
-  if (month > 2 && month < 6) {
-    season = "spring";
-  } else if (month > 5 && month < 9) {
-    season = "summer";
-  } else if (month > 8 && month < 12) {
-    season = "autumn";
-  } else {
-    season = "winter";
+app.use(bodyParser.json());
+const url = "mongodb://localhost:27017";
+const dbName = "SeasonAPIDB";
+
+mongodb.MongoClient.connect(
+  url,
+  { useUnifiedTopology: true },
+  (error, client) => {
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    const db = client.db(dbName);
+
+    app.post("/api/key", (req, res) => {
+      const apiKey = uuidv4();
+
+      db.collection("apiKeys").insertOne({ apiKey }, (error) => {
+        if (error) {
+          console.log(error);
+          res.sendStatus(500);
+          return;
+        }
+        res.json({ apiKey });
+      });
+    });
   }
-  return season;
-};
+);
 
 app.get("/", (req, res) => {
   res.json({ status: "Success!" });
