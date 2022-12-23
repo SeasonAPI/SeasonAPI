@@ -4,7 +4,7 @@ const app = express();
 const { getCurrentSeason, generateApiKey } = require("./functions/index.js");
 const mongoose = require("mongoose");
 const chalk = require("chalk");
-
+require("dotenv").config();
 app.get("/", (req, res) => {
   res.json({ status: "Success!" });
   res.status(200);
@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 
 mongoose
   .connect(
-    "mongodb+srv://SAPIAuthor:Sohom829@seasonapi.fo1uxqt.mongodb.net/?retryWrites=true&w=majority",
+    `mongodb+srv://SAPIAuthor:${process.env.DB_PASS}@seasonapi.fo1uxqt.mongodb.net/?retryWrites=true&w=majority`,
     { useNewUrlParser: true }
   )
   .then(() => console.log("MongoDB connected..."))
