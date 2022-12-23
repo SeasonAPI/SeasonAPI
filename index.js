@@ -2,7 +2,6 @@ const express = require("express");
 const syc = require("syc-logger");
 const app = express();
 const chalk = require("chalk");
-const { frontEndFile } = require("./f.js");
 const getCurrentSeason = () => {
   const date = new Date();
   const month = date.getMonth();
@@ -62,27 +61,4 @@ app.listen(3000, () => {
         chalk.green("BACKEND CONNECTED!")
     )
   );
-  if (!frontEndFile) {
-    console.log(
-      chalk.bold(
-        chalk.yellow("[ ") +
-          chalk.red("ERROR ") +
-          chalk.yellow("] ") +
-          chalk.blue(": ") +
-          chalk.cyan("FRONTEND ") +
-          chalk.red("NOT FOUND!")
-      )
-    );
-  } else {
-    console.log(
-      chalk.bold(
-        chalk.yellow("[ ") +
-          chalk.red("FRONTEND MANAGER ") +
-          chalk.yellow("] ") +
-          chalk.blue(": ") +
-          chalk.cyan("FRONTEND ") +
-          chalk.orange("CONNECTED")
-      )
-    );
-  }
 });
