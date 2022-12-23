@@ -37,6 +37,32 @@ mongodb.MongoClient.connect(
   }
 );
 
+app.use((req, res, next) => {
+  // Check if the API key is present in the request
+  const apiKey = req.headers["x-api-key"] || req.body.apiKey;
+  if (!apiKey) {
+    res.sendStatus(401);
+    return;
+  }
+
+  // Verify the API key against the database
+  db.collection("apiKeys").findOne({ apiKey }, (error, result) => {
+    if (error) {
+      console.log(error);
+      res.sendStatus(500);
+      return;
+    }
+
+    if (!result) {
+      res.sendStatus(401);
+      return;
+    }
+
+    // Allow the request to continue if the API key is valid
+    next();
+  });
+});
+
 app.get("/", (req, res) => {
   res.json({ status: "Success!" });
   res.status(200);
