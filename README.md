@@ -12,7 +12,7 @@ An API to get current season or season by a specified month.
 ### Get all items
 
 ```http
-  GET /api
+  GET /get-current-season
 ```
 
 | Parameter | Type     | Description                |
@@ -22,7 +22,7 @@ An API to get current season or season by a specified month.
 #### Get item
 
 ```http
-  GET /api/custom?month=${month}
+  GET /api/get-season/?month=${month}
 ```
 
 **NOTE:** Use month by it's number 1-12
