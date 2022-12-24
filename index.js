@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const chalk = require("chalk");
 require("dotenv").config();
 app.get("/", (req, res) => {
-  res.json({ status: "Success!" });
+  res.send("<a href='/api/keys'>Get API Key</a>");
   res.status(200);
 });
 
@@ -26,7 +26,6 @@ mongoose
     )
   )
   .catch((err) => console.log(err));
-// Set up a Mongoose model for storing API keys
 const apiKeySchema = new mongoose.Schema({
   key: {
     type: String,
@@ -56,7 +55,6 @@ app.post("/api/keys", (req, res) => {
   });
 });
 
-// Middleware function to validate API keys
 function validateApiKey(req, res, next) {
   const apiKey = req.headers["x-api-key"] || req.query.api_key;
   if (!apiKey) {
