@@ -35,7 +35,7 @@ An API to get current season or season by a specified month.
 
 - Custom month
 - Always current month
-- Open Souce
+- Open Source
 
 ## Contributing
 
