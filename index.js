@@ -15,7 +15,16 @@ mongoose
     `mongodb+srv://SAPIAuthor:${process.env.DB_PASS}@seasonapi.fo1uxqt.mongodb.net/?retryWrites=true&w=majority`,
     { useNewUrlParser: true }
   )
-  .then(() => console.log("MongoDB connected..."))
+  .then(() =>
+    console.log(
+      chalk.green.bold("[ ") +
+        chalk.cyan.bold("DATABASE MANAGER") +
+        chalk.green.bold(" ]") +
+        chalk.yellowBright(": ") +
+        chalk.greenBright.bold("MongoDB") +
+        chalk.red.bold.underline.italic(" Connected.")
+    )
+  )
   .catch((err) => console.log(err));
 // Set up a Mongoose model for storing API keys
 const apiKeySchema = new mongoose.Schema({
