@@ -1,8 +1,10 @@
 "use strict";
+/**
+ * The `generateApiKey()` function is used to generate random API Keys with 32 characters
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateApiKey = void 0;
 const crypto = require("crypto");
-// Function to generate a new API key
 function generateApiKey() {
     return crypto.randomBytes(32).toString("hex");
 }

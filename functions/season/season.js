@@ -1,4 +1,9 @@
 "use strict";
+/**
+ * The `getCurrentSeason()` function is used to get the current season of the user.
+ * It can be used anywhere. Discord, Browser or anything!
+ * @returns Current Season
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCurrentSeason = void 0;
 const getCurrentSeason = () => {
