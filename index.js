@@ -89,9 +89,20 @@ app.get("/api/get-season/custom", validateApiKey, (req, res) => {
   res.json({ season: `${season}` });
   res.status(200);
 });
-
-app.listen(3069, () => {
-  syc.logEmoji("Server started", 1, "#FFFFF", "🍂");
+let PORT = 3069;
+app.listen(PORT, () => {
+  console.log(
+    chalk.bold.red("[ ") +
+      chalk.cyanBright.bold("SERVER MANAGER") +
+      chalk.bold.red(" ]") +
+      chalk.bold.yellow(": ") +
+      chalk.blueBright.bold("SERVER STARTED") +
+      chalk.bold.green(" LISTENING TO") +
+      chalk.bold.yellow(": ") +
+      chalk.bold.underline.redBright("http://localhost") +
+      chalk.bold.yellow.underline(":") +
+      chalk.bold.magenta.underline(`${PORT}`)
+  );
   console.log(chalk.bold(syc.logEmojiAsync("API Created.")));
   console.log(
     chalk.bold(
