@@ -14,7 +14,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
-    "@types/node": "^18.11.17"
+    "@types/node": "^18.11.17",
+    "node": "^19.3.0",
+    "npm": "^9.2.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -24,7 +26,7 @@
     "type": "git",
     "url": "git+https://github.com/Sohom829/SeasonAPI.git"
   },
-  "author": "Sayln Inc.",
+  "author": "Mohtasim Alam Sohom",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Sohom829/SeasonAPI/issues"
