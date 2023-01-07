@@ -171,7 +171,7 @@ app.get("/api/get-season/custom", validateApiKey, (req, res) => {
   res.json({ season: `${season}` });
   res.status(200);
 });
-let PORT = 3069;
+let PORT = 3069 || 3070 || 3071 || 3072;
 const server = app.listen(PORT, () => {
   console.log(
     chalk.bold.red("[ ") +
