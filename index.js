@@ -116,14 +116,14 @@ try {
   function validateApiKey(req, res, next) {
     const apiKey = req.headers["x-api-key"] || req.query.api_key;
     if (!apiKey) {
-      return res.status(401).send({ message: "No API key provided" });
+      return res.status(600).send({ message: "No API key provided" });
     }
     ApiKey.findOne({ key: apiKey }, (err, key) => {
       if (err) {
         return res.status(500).send(err);
       }
       if (!key) {
-        return res.status(401).send({ message: "Invalid API key" });
+        return res.status(600).send({ message: "Invalid API key" });
       }
       next();
     });
@@ -143,7 +143,7 @@ try {
           })
           .status(200);
       } else if (!country) {
-        res.status(400).json({ error: "No country provided", status: 400 });
+        res.status(601).json({ error: "No country provided", status: 400 });
       } else {
         res.json({
           season: `${getCurrentSeason()}`,
