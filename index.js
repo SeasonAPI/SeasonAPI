@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require("mongoose");
 const chalk = require("chalk");
 require("./google.connect");
+const cron = require("node-cron");
 const {
   generateApiKey,
   getCurrentSeasonBDINNL,
@@ -171,7 +172,7 @@ app.get("/api/get-season/custom", validateApiKey, (req, res) => {
   res.status(200);
 });
 let PORT = 3069;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(
     chalk.bold.red("[ ") +
       chalk.cyanBright.bold("SERVER MANAGER") +
@@ -194,4 +195,34 @@ app.listen(PORT, () => {
         chalk.green.italic("Backend Connected!")
     )
   );
+});
+
+cron.schedule("0 * * * *", () => {
+  console.log("Restarting server...");
+  server.close(() => {
+    app.listen(PORT, () => {
+      console.log(
+        chalk.bold.red("[ ") +
+          chalk.cyanBright.bold("SERVER MANAGER") +
+          chalk.bold.red(" ]") +
+          chalk.bold.yellow(": ") +
+          chalk.blueBright.bold("SERVER STARTED") +
+          chalk.bold.green(" LISTENING TO") +
+          chalk.bold.yellow(": ") +
+          chalk.bold.underline.redBright.italic("http://localhost") +
+          chalk.bold.yellow.underline(":") +
+          chalk.bold.magenta.underline(`${PORT}`)
+      );
+      console.log(chalk.bold.italic(syc.logEmojiAsync("API Created.")));
+      console.log(
+        chalk.bold(
+          chalk.red.italic("[ ") +
+            chalk.cyan.italic("Backend Manager ") +
+            chalk.red.italic("] ") +
+            chalk.yellow.italic(": ") +
+            chalk.green.italic("Backend Connected!")
+        )
+      );
+    });
+  });
 });
