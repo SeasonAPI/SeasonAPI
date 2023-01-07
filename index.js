@@ -1,20 +1,74 @@
 const express = require("express");
 const syc = require("syc-logger");
 const app = express();
-const { getCurrentSeason, generateApiKey } = require("./functions/index.js");
 const mongoose = require("mongoose");
 const chalk = require("chalk");
+require("./google.connect");
+const {
+  generateApiKey,
+  getCurrentSeasonBDINNL,
+} = require("./functions/index.js");
 require("dotenv").config();
+
+// FUNCTIONS
+const getCurrentSeason = () => {
+  const date = new Date();
+  const currentMonth = date.getMonth();
+  let season;
+
+  if (currentMonth <= 3 && currentMonth >= 5) {
+    season = "spring";
+  } else if (currentMonth <= 6 && currentMonth >= 8) {
+    season = "summer";
+  } else if (currentMonth <= 9 && currentMonth >= 11) {
+    season = "autumn";
+  } else {
+    season = "winter";
+  }
+  return season;
+};
+
+const date = new Date();
+
+const getCurrentYear = date.getFullYear();
+const getTime = date.toLocaleTimeString();
+const getDate = date.getDate();
+let dayNames = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+let monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const getMonthName = monthNames[date.getMonth()];
+
+const getDayName = dayNames[date.getDay()];
+
 app.get("/", (req, res) => {
   res.send("<a href='/api/keys'>Get API Key</a>");
   res.status(200);
 });
 
 mongoose
-  .connect(
-    `mongodb+srv://SAPIAuthor:${process.env.DB_PASS}@seasonapi.fo1uxqt.mongodb.net/?retryWrites=true&w=majority`,
-    { useNewUrlParser: true }
-  )
+  .connect(`${process.env.MongoDB}`, { useNewUrlParser: true })
+
   .then(() =>
     console.log(
       chalk.green.bold("[ ") +
@@ -26,6 +80,7 @@ mongoose
     )
   )
   .catch((err) => console.log(err));
+mongoose.set("strictQuery", true);
 const apiKeySchema = new mongoose.Schema({
   key: {
     type: String,
@@ -72,24 +127,43 @@ function validateApiKey(req, res, next) {
 }
 
 app.get("/api/get-current-season", validateApiKey, (req, res) => {
-  res.json({ season: `${getCurrentSeason()}` });
-  res.status(200);
+  const country = req.query.country;
+  try {
+    if (country === "bd" || country === "in" || country === "nl") {
+      res
+        .json({
+          season: `${getCurrentSeasonBDINNL()}`,
+          date: `${getDate}`,
+          month: `${getMonthName}`,
+          day: `${getDayName}`,
+          year: `${getCurrentYear}`,
+        })
+        .status(200);
+    } else {
+      res.json({
+        season: `${getCurrentSeason()}`,
+        date: `${getDate}`,
+        month: `${getMonthName}`,
+        day: `${getDayName}`,
+        year: `${getCurrentYear}`,
+      });
+      res.status(200);
+    }
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
 });
 app.get("/api/get-season/custom", validateApiKey, (req, res) => {
-  const month = req.query.month;
+  const currentMonth = req.query.month;
 
   let season;
 
-  if (month >= 2 && month <= 4) {
+  if (currentMonth >= 3 && currentMonth <= 5) {
     season = "spring";
-  } else if (month >= 4 && month <= 6) {
+  } else if (currentMonth >= 6 && currentMonth <= 8) {
     season = "summer";
-  } else if (month >= 6 && month <= 8) {
-    season = "rainy";
-  } else if (month >= 8 && month <= 10) {
+  } else if (currentMonth >= 9 && currentMonth <= 11) {
     season = "autumn";
-  } else if (month >= 10 && month <= 12) {
-    season = "late autumn";
   } else {
     season = "winter";
   }
@@ -106,18 +180,18 @@ app.listen(PORT, () => {
       chalk.blueBright.bold("SERVER STARTED") +
       chalk.bold.green(" LISTENING TO") +
       chalk.bold.yellow(": ") +
-      chalk.bold.underline.redBright("http://localhost") +
+      chalk.bold.underline.redBright.italic("http://localhost") +
       chalk.bold.yellow.underline(":") +
       chalk.bold.magenta.underline(`${PORT}`)
   );
-  console.log(chalk.bold(syc.logEmojiAsync("API Created.")));
+  console.log(chalk.bold.italic(syc.logEmojiAsync("API Created.")));
   console.log(
     chalk.bold(
-      chalk.red("[ ") +
-        chalk.cyan("BACKEND MANAGER ") +
-        chalk.red("] ") +
-        chalk.yellow(": ") +
-        chalk.green("BACKEND CONNECTED!")
+      chalk.red.italic("[ ") +
+        chalk.cyan.italic("Backend Manager ") +
+        chalk.red.italic("] ") +
+        chalk.yellow.italic(": ") +
+        chalk.green.italic("Backend Connected!")
     )
   );
 });
