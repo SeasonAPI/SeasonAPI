@@ -8,22 +8,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCurrentSeason = void 0;
 const getCurrentSeason = () => {
     const date = new Date();
-    const month = date.getMonth();
+    const currentMonth = date.getMonth();
     let season;
-    if (month >= 2 && month <= 4) {
+    if (currentMonth <= 3 && currentMonth >= 5) {
         season = "spring";
     }
-    else if (month >= 4 && month <= 6) {
+    else if (currentMonth <= 6 && currentMonth >= 8) {
         season = "summer";
     }
-    else if (month >= 6 && month <= 8) {
-        season = "rainy";
-    }
-    else if (month >= 8 && month <= 10) {
+    else if (currentMonth <= 9 && currentMonth >= 11) {
         season = "autumn";
-    }
-    else if (month >= 10 && month <= 12) {
-        season = "late autumn";
     }
     else {
         season = "winter";

@@ -1,1 +1,1 @@
-export { getCurrentSeason } from "./season";
+export { getCurrentSeasonBDINNL } from "./bd-in-nl";

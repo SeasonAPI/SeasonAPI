@@ -1,0 +1,1 @@
+export { getCurrentSeasonBDINNL } from "./getCurrentSeason";
