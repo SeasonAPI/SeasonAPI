@@ -12,12 +12,15 @@ An API to get current season or season by a specified month.
 ### Get all items
 
 ```http
-  GET /get-current-season
+  GET /api/get-current-season
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
+| Parameter | Type     | Description                        |
+| :-------- | :------- | :--------------------------------- |
+| `api_key` | `string` | **Required**. Your API key         |
+| `country` | `string` | The country you want to get season |
+
+**NOTE:** Use ISO code. e.g: Bangladesh = BD, United States of America = US.
 
 #### Get item
 
@@ -33,6 +36,8 @@ An API to get current season or season by a specified month.
 
 ## Features
 
+- With current year
+- Always update
 - Custom month
 - Always current month
 - Open Source
