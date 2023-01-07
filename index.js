@@ -3,7 +3,7 @@ const syc = require("syc-logger");
 const app = express();
 const mongoose = require("mongoose");
 const chalk = require("chalk");
-require("./google.connect");
+// require("./google.connect"); comment because need Google to verify the process first.
 const cron = require("node-cron");
 const {
   generateApiKey,
@@ -66,7 +66,7 @@ app.get("/", (req, res) => {
   res.send("<a href='/api/keys'>Get API Key</a>");
   res.status(200);
 });
-
+mongoose.set("strictQuery", false);
 mongoose
   .connect(`${process.env.MongoDB}`, { useNewUrlParser: true })
 
@@ -81,7 +81,7 @@ mongoose
     )
   )
   .catch((err) => console.log(err));
-mongoose.set("strictQuery", true);
+
 const apiKeySchema = new mongoose.Schema({
   key: {
     type: String,
