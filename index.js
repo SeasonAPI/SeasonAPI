@@ -140,6 +140,8 @@ app.get("/api/get-current-season", validateApiKey, (req, res) => {
           year: `${getCurrentYear}`,
         })
         .status(200);
+    } else if (!country) {
+      res.status(400).json({ error: "No country provided", status: 400 });
     } else {
       res.json({
         season: `${getCurrentSeason()}`,
