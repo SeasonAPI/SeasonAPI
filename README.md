@@ -9,6 +9,12 @@ An API to get current season or season by a specified month.
 
 ## API Reference
 
+### Base URL
+
+```http
+https://seasonapi.iamsohom829.repl.co/
+```
+
 ### Get all items
 
 ```http
@@ -30,9 +36,10 @@ An API to get current season or season by a specified month.
 
 **NOTE:** Use month by it's number 1-12
 
-| Parameter | Type     | Description                                   |
-| :-------- | :------- | :-------------------------------------------- |
-| `month`   | `number` | **Required**. Number of month to fetch season |
+| Parameter | Type     | Description                                      |
+| :-------- | :------- | :----------------------------------------------- |
+| `month`   | `number` | **Required**. Number of month to fetch season    |
+| `country` | `string` | **Required**. The country you want to get season |
 
 ## Features
 
