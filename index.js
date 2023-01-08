@@ -140,6 +140,7 @@ try {
             month: `${getMonthName}`,
             day: `${getDayName}`,
             year: `${getCurrentYear}`,
+            footer: `Provided by Sayln SeasonAPI`,
           })
           .status(200);
       } else if (!country) {
