@@ -152,11 +152,12 @@ try {
           month: `${getMonthName}`,
           day: `${getDayName}`,
           year: `${getCurrentYear}`,
+          footer: `Provided by Sayln SeasonAPI`,
         });
         res.status(200);
       }
     } catch (err) {
-      res.status(400).json({ error: err });
+      res.status(500).json({ error: err });
     }
   });
   app.get("/api/get-season/custom", validateApiKey, (req, res) => {
@@ -164,17 +165,60 @@ try {
 
     let season;
 
-    if (currentMonth >= 3 && currentMonth <= 5) {
-      season = "spring";
-    } else if (currentMonth >= 6 && currentMonth <= 8) {
-      season = "summer";
-    } else if (currentMonth >= 9 && currentMonth <= 11) {
-      season = "autumn";
-    } else {
-      season = "winter";
+    const country = req.query.country;
+    try {
+      if (country === "bd" || country === "in" || country === "nl") {
+        let season;
+
+        if (currentMonth >= 3 && currentMonth <= 4) {
+          season = "spring";
+        } else if (currentMonth >= 5 && currentMonth <= 6) {
+          season = "summer";
+        } else if (currentMonth >= 7 && currentMonth <= 8) {
+          season = "rainy";
+        } else if (currentMonth >= 9 && currentMonth <= 10) {
+          season = "autumn";
+        } else if (currentMonth >= 11 && currentMonth < 12) {
+          season = "late autumn";
+        } else {
+          season = "winter";
+        }
+
+        res
+          .json({
+            season: `${season}`,
+            date: `${getDate}`,
+            month: `${getMonthName}`,
+            day: `${getDayName}`,
+            year: `${getCurrentYear}`,
+            footer: `Provided by Sayln SeasonAPI`,
+          })
+          .status(200);
+      } else if (!country) {
+        res.status(601).json({ error: "No country provided", status: 400 });
+      } else {
+        if (currentMonth >= 3 && currentMonth <= 5) {
+          season = "spring";
+        } else if (currentMonth >= 6 && currentMonth <= 8) {
+          season = "summer";
+        } else if (currentMonth >= 9 && currentMonth <= 11) {
+          season = "autumn";
+        } else {
+          season = "winter";
+        }
+        res.json({
+          season: `${season}`,
+          date: `${getDate}`,
+          month: `${getMonthName}`,
+          day: `${getDayName}`,
+          year: `${getCurrentYear}`,
+          footer: `Provided by Sayln SeasonAPI`,
+        });
+        res.status(200);
+      }
+    } catch (err) {
+      res.status(500).json({ error: err });
     }
-    res.json({ season: `${season}` });
-    res.status(200);
   });
   let PORT = 3069 || 3070 || 3071 || 3072;
   const server = app.listen(PORT, () => {
