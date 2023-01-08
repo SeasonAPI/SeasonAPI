@@ -3,14 +3,16 @@ const getCurrentSeasonBDINNL = () => {
   const currentMonth = date.getMonth();
   let season;
 
-  if (currentMonth <= 3 && currentMonth >= 4) {
+  if (currentMonth >= 3 && currentMonth <= 4) {
     season = "spring";
-  } else if (currentMonth <= 6 && currentMonth >= 7) {
+  } else if (currentMonth >= 5 && currentMonth <= 6) {
     season = "summer";
-  } else if (currentMonth <= 8 && currentMonth >= 9) {
+  } else if (currentMonth >= 7 && currentMonth <= 8) {
     season = "rainy";
-  } else if (currentMonth <= 10 && currentMonth >= 11) {
+  } else if (currentMonth >= 9 && currentMonth <= 10) {
     season = "autumn";
+  } else if (currentMonth >= 11 && currentMonth < 12) {
+    season = "late autumn";
   } else {
     season = "winter";
   }
