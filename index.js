@@ -1,3 +1,5 @@
+const { setFlagsFromString } = require("v8");
+
 try {
   const express = require("express");
   const syc = require("syc-logger");
@@ -183,10 +185,10 @@ try {
         } else {
           season = "winter";
         }
-
+        let currentSeason = season.charAt(0).toUpperCase() + season.slice(1);
         res
           .json({
-            season: `${season}`,
+            season: `${currentSeason}`,
             date: `${getDate}`,
             month: `${getMonthName}`,
             day: `${getDayName}`,
@@ -206,8 +208,9 @@ try {
         } else {
           season = "winter";
         }
+        let currentSeason = season.charAt(0).toUpperCase() + season.slice(1);
         res.json({
-          season: `${season}`,
+          season: `${currentSeason}`,
           date: `${getDate}`,
           month: `${getMonthName}`,
           day: `${getDayName}`,

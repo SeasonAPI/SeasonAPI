@@ -16,7 +16,8 @@ const getCurrentSeasonBDINNL = () => {
   } else {
     season = "winter";
   }
-  return season;
+  let currentSeason = season.charAt(0).toUpperCase() + season.slice(1);
+  return currentSeason;
 };
 
 export { getCurrentSeasonBDINNL };
