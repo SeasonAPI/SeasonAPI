@@ -2,13 +2,13 @@
   "compilerOptions": {
     "strict": true,
     "module": "commonjs",
-    "target": "es2015",
+    "target": "ES3",
     "declaration": true,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./functions",
+    "outDir": "./out",
     "noImplicitAny": true
   },
-  "include": ["ts-funcs/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
