@@ -30,7 +30,8 @@ try {
     } else {
       season = "winter";
     }
-    return season;
+    let currentSeason = season.charAt(0).toUpperCase() + season.slice(1);
+    return currentSeason;
   };
 
   const date = new Date();
@@ -142,7 +143,7 @@ try {
             month: `${getMonthName}`,
             day: `${getDayName}`,
             year: `${getCurrentYear}`,
-            footer: `Provided by Sayln SeasonAPI`,
+            footer: `Season provided by Sayln SeasonAPI`,
           })
           .status(200);
       } else if (!country) {
@@ -154,7 +155,7 @@ try {
           month: `${getMonthName}`,
           day: `${getDayName}`,
           year: `${getCurrentYear}`,
-          footer: `Provided by Sayln SeasonAPI`,
+          footer: `Season provided by Sayln SeasonAPI`,
         });
         res.status(200);
       }
@@ -193,7 +194,7 @@ try {
             month: `${getMonthName}`,
             day: `${getDayName}`,
             year: `${getCurrentYear}`,
-            footer: `Provided by Sayln SeasonAPI`,
+            footer: `Season provided by Sayln SeasonAPI`,
           })
           .status(200);
       } else if (!country) {
@@ -215,7 +216,7 @@ try {
           month: `${getMonthName}`,
           day: `${getDayName}`,
           year: `${getCurrentYear}`,
-          footer: `Provided by Sayln SeasonAPI`,
+          footer: `Season provided by Sayln SeasonAPI`,
         });
         res.status(200);
       }
