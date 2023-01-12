@@ -4,6 +4,7 @@ import * as syc from "syc-logger";
 import * as mongoose from "mongoose";
 import * as chalk from "chalk";
 import * as cron from "node-cron";
+import * as path from "path";
 import { getCurrentSeasonBDINNL, generateApiKey } from "../index";
 require("dotenv").config();
 
@@ -96,7 +97,8 @@ const API = () => {
     const ApiKey = mongoose.model("ApiKey", apiKeySchema);
 
     app.get("/api/keys", (req: any, res: any) => {
-      res.sendFile(__dirname + "/index.html");
+      const filePath = path.join(__dirname, "../../", "index.html");
+      res.sendFile(filePath);
     });
 
     app.post("/api/keys", (req: any, res: any) => {
