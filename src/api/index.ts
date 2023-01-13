@@ -11,6 +11,7 @@ import { getCurrentSeasonBDINNL, generateApiKey } from "../index";
 require("dotenv").config();
 import * as fs from "fs";
 import * as cheerio from "cheerio";
+const spawn = require("child_process").spawn;
 
 const app = express();
 const API = () => {
@@ -307,14 +308,13 @@ const API = () => {
     console.log("\n");
     console.log("\n");
     console.log("\n");
-    process.exit();
-    exec("npm start", (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
+    process.on("exit", () => {
+      const child = spawn("npm", "start", {
+        detached: true,
+        stdio: "ignore",
+      });
+
+      child.unref();
     });
   }
 };
