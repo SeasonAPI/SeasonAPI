@@ -307,6 +307,7 @@ const API = () => {
     console.log("\n");
     console.log("\n");
     console.log("\n");
+    process.exit();
     exec("npm start", (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
