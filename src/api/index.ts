@@ -6,8 +6,11 @@ import * as mongoose from "mongoose";
 import * as chalk from "chalk";
 import * as cron from "node-cron";
 import * as path from "path";
+import fetch from "node-fetch";
 import { getCurrentSeasonBDINNL, generateApiKey } from "../index";
 require("dotenv").config();
+import * as fs from "fs";
+import * as cheerio from "cheerio";
 
 const app = express();
 const API = () => {
@@ -230,6 +233,19 @@ const API = () => {
       const docsPath = path.join(__dirname, "../../", "docs.html");
       res.sendFile(docsPath);
       res.status(200);
+    });
+    app.get("/example", async (req: Request, res: Response) => {
+      const response = await fetch(
+        `https://seasonapi.iamsohom829.repl.co/api/get-current-season/?api_key=${process.env.APIKEY}&country=bd`
+      );
+      const body = await response.json();
+      fs.readFile("example.html", "utf8", (err, data) => {
+        if (err) throw err;
+        // manipulate the HTML using cheerio
+        let $ = cheerio.load(data);
+        $("h2").text(`${body.season}`);
+        res.send($.html());
+      });
     });
     let PORT = 3069 || 3070 || 3071 || 3072;
     const server = app.listen(PORT, () => {
