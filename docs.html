@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Documentation</title>
+    <style>
+      /* CSS styles for the page */
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+      }
+      h1 {
+        font-size: 2em;
+        margin-bottom: 0.5em;
+        color: tomato;
+      }
+      h2 {
+        color: crimson;
+        font-size: 1.5em;
+        margin-top: 2em;
+        margin-bottom: 0.5em;
+      }
+      .api-section {
+        margin-bottom: 2em;
+      }
+      .endpoint {
+        margin-bottom: 1em;
+      }
+      .endpoint-name {
+        color: cornflowerblue;
+        font-weight: bold;
+      }
+      .endpoint-description {
+        margin-bottom: 0.5em;
+      }
+      .endpoint-parameters {
+        margin-top: 0.5cm;
+        margin-bottom: 0.5em;
+      }
+      .endpoint-parameters th,
+      .endpoint-parameters td {
+        padding: 0.5em;
+      }
+      .endpoint-parameters th {
+        text-align: left;
+      }
+      .endpoint-parameters td {
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>API Documentation</h1>
+    <div class="api-section">
+      <h2>Endpoints</h2>
+      <div class="endpoint">
+        <div class="endpoint-name">
+          GET /api/get-current-season/?api_key={api_key}&country={country}
+        </div>
+        <div class="endpoint-description">Get the current season</div>
+        <table class="endpoint-parameters">
+          <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>api_key</td>
+            <td>string</td>
+            <td>The API Key.</td>
+          </tr>
+          <tr>
+            <td>country</td>
+            <td>string</td>
+            <td>The country you want to get season for.</td>
+          </tr>
+        </table>
+      </div>
+      <div class="endpoint">
+        <div class="endpoint-name">
+          GET
+          /api/get-season/custom/?api_key={api_key}&month={month}&country={bd}
+        </div>
+        <div class="endpoint-description">Retrieves a specific user by ID.</div>
+      </div>
+    </div>
+  </body>
+</html>
