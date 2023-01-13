@@ -1,5 +1,6 @@
 import { exec } from "child_process";
 import * as express from "express";
+import { Express, Request, Response } from "express";
 import * as syc from "syc-logger";
 import * as mongoose from "mongoose";
 import * as chalk from "chalk";
@@ -64,7 +65,8 @@ const API = () => {
     const getDayName = dayNames[date.getDay()];
 
     app.get("/", (req: any, res: any) => {
-      res.send("<a href='/api/keys'>Get API Key</a>");
+      const mainFilePath = path.join(__dirname, "../../", "main.html");
+      res.sendFile(mainFilePath);
       res.status(200);
     });
     mongoose.set("strictQuery", false);
@@ -83,19 +85,16 @@ const API = () => {
       )
       .catch((err: any) => console.log(err));
 
-    const apiKeySchema = new mongoose.Schema(
-      {
-        key: {
-          type: String,
-          required: true,
-        },
-        createdAt: {
-          type: Date,
-          default: Date.now,
-        },
+    const apiKeySchema = new mongoose.Schema({
+      key: {
+        type: String,
+        required: true,
       },
-      { typeKey: "$type" }
-    );
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    });
 
     const ApiKey = mongoose.model("ApiKey", apiKeySchema);
 
@@ -223,6 +222,11 @@ const API = () => {
       } catch (err) {
         res.status(500).json({ error: err });
       }
+    });
+    app.get("/docs", (req: Request, res: Response) => {
+      const docsPath = path.join(__dirname, "../../", "docs.html");
+      res.sendFile(docsPath);
+      res.status(200);
     });
     let PORT = 3069 || 3070 || 3071 || 3072;
     const server = app.listen(PORT, () => {
