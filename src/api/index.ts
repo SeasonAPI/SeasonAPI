@@ -111,7 +111,10 @@ const API = () => {
           console.log(err);
           return res.status(500).send(err);
         }
-        res.send({ key });
+        res.send({
+          key,
+          docs: "Now read the docs from https://seasonapi.iamsohom829.repl.co/docs",
+        });
       });
     });
 
