@@ -7,67 +7,27 @@ import * as chalk from "chalk";
 import * as cron from "node-cron";
 import * as path from "path";
 import fetch from "node-fetch";
-import { getCurrentSeasonBDINNL, generateApiKey } from "../index";
+import {
+  getCurrentSeasonBDINNL,
+  generateApiKey,
+  getCurrentSeason,
+  getCurrentYear,
+  getDayName,
+  getMonthName,
+  getDate,
+  getSouthPoleSeason,
+  getTime,
+} from "../index";
 require("dotenv").config();
 import * as fs from "fs";
 import * as cheerio from "cheerio";
 const spawn = require("child_process").spawn;
+// const forever = require('forever-monitor');
+import * as forever from "forever-monitor";
 
 const app = express();
 const API = () => {
   try {
-    // FUNCTIONS
-    const getCurrentSeason = () => {
-      const date = new Date();
-      const currentMonth = date.getMonth();
-      let season;
-
-      if (currentMonth <= 3 && currentMonth >= 5) {
-        season = "spring";
-      } else if (currentMonth <= 6 && currentMonth >= 8) {
-        season = "summer";
-      } else if (currentMonth <= 9 && currentMonth >= 11) {
-        season = "autumn";
-      } else {
-        season = "winter";
-      }
-      let currentSeason = season.charAt(0).toUpperCase() + season.slice(1);
-      return currentSeason;
-    };
-
-    const date = new Date();
-
-    const getCurrentYear = date.getFullYear();
-    const getTime = date.toLocaleTimeString();
-    const getDate = date.getDate();
-    let dayNames = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    let monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
-    const getMonthName = monthNames[date.getMonth()];
-
-    const getDayName = dayNames[date.getDay()];
-
     app.get("/", (req: any, res: any) => {
       const mainFilePath = path.join(__dirname, "../../", "main.html");
       res.sendFile(mainFilePath);
@@ -138,37 +98,65 @@ const API = () => {
       });
     };
 
-    app.get("/api/get-current-season", validateApiKey, (req: any, res: any) => {
-      const country = req.query.country;
-      try {
-        if (country === "bd" || country === "in" || country === "nl") {
-          res
-            .json({
-              season: `${getCurrentSeasonBDINNL()}`,
+    app.get(
+      "/api/get-current-season",
+      validateApiKey,
+      (req: Request, res: Response) => {
+        const country = req.query.country;
+        const pole = req.query.pole;
+        try {
+          if (pole === "north") {
+            if (country === "bd" || country === "in" || country === "nl") {
+              res
+                .json({
+                  season: `${getCurrentSeasonBDINNL()}`,
+                  date: `${getDate}`,
+                  month: `${getMonthName}`,
+                  day: `${getDayName}`,
+                  year: `${getCurrentYear}`,
+                  footer: `Season provided by Sayln SeasonAPI`,
+                })
+                .status(200);
+            } else if (!country) {
+              res
+                .status(601)
+                .json({ error: "No country provided", status: 400 });
+            } else {
+              res.json({
+                season: `${getCurrentSeason()}`,
+                date: `${getDate}`,
+                month: `${getMonthName}`,
+                day: `${getDayName}`,
+                year: `${getCurrentYear}`,
+                footer: `Season provided by Sayln SeasonAPI`,
+              });
+            }
+            res.status(200);
+          } else if (pole === "south") {
+            res.json({
+              season: `${getCurrentSeason()}`,
               date: `${getDate}`,
               month: `${getMonthName}`,
               day: `${getDayName}`,
               year: `${getCurrentYear}`,
               footer: `Season provided by Sayln SeasonAPI`,
-            })
-            .status(200);
-        } else if (!country) {
-          res.status(601).json({ error: "No country provided", status: 400 });
-        } else {
-          res.json({
-            season: `${getCurrentSeason()}`,
-            date: `${getDate}`,
-            month: `${getMonthName}`,
-            day: `${getDayName}`,
-            year: `${getCurrentYear}`,
-            footer: `Season provided by Sayln SeasonAPI`,
-          });
-          res.status(200);
+            });
+            res.status(200);
+          } else if (!pole) {
+            res.status(607).json({ message: `No pole provided` });
+          } else {
+            res
+              .status(608)
+              .json({
+                message: `Expected pole \`north\` and \`south\` but got \`${pole}\` instead`,
+                status: 607,
+              });
+          }
+        } catch (err) {
+          res.status(500).json({ error: err });
         }
-      } catch (err) {
-        res.status(500).json({ error: err });
       }
-    });
+    );
     app.get("/api/get-season/custom", validateApiKey, (req: any, res: any) => {
       const currentMonth = req.query.month;
 
@@ -245,11 +233,12 @@ const API = () => {
         // manipulate the HTML using cheerio
         let $ = cheerio.load(data);
         $("h2").text(`${body.season}`);
+        $("h3").text(`${body.footer}`);
         res.send($.html());
       });
     });
     let PORT = 3069 || 3070 || 3071 || 3072;
-    const server = app.listen(PORT, () => {
+    let server = app.listen(PORT, () => {
       console.log(
         chalk.bold.red("[ ") +
           chalk.cyanBright.bold("SERVER MANAGER") +
@@ -274,10 +263,11 @@ const API = () => {
       );
     });
 
-    cron.schedule("0 * * * *", () => {
-      console.log("Restarting server...");
+    cron.schedule("*/5 * * * *", () => {
+      PORT = PORT == 3000 ? 3001 : 3000;
+      console.log("Restarting server..");
       server.close(() => {
-        app.listen(PORT, () => {
+        server = app.listen(PORT, () => {
           console.log(
             chalk.bold.red("[ ") +
               chalk.cyanBright.bold("SERVER MANAGER") +
@@ -308,14 +298,6 @@ const API = () => {
     console.log("\n");
     console.log("\n");
     console.log("\n");
-    process.on("exit", () => {
-      const child = spawn("npm", "start", {
-        detached: true,
-        stdio: "ignore",
-      });
-
-      child.unref();
-    });
   }
 };
 
