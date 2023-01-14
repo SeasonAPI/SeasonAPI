@@ -1,2 +1,13 @@
-export { getCurrentSeasonBDINNL } from "./season";
+export {
+  getCurrentSeasonBDINNL,
+  getSouthPoleSeason,
+  getCurrentSeason,
+} from "./season";
+export {
+  getTime,
+  getMonthName,
+  getDayName,
+  getCurrentYear,
+  getDate,
+} from "./time";
 export { generateApiKey } from "./api";
