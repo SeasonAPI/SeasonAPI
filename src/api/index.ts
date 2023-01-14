@@ -145,12 +145,10 @@ const API = () => {
           } else if (!pole) {
             res.status(607).json({ message: `No pole provided` });
           } else {
-            res
-              .status(608)
-              .json({
-                message: `Expected pole \`north\` and \`south\` but got \`${pole}\` instead`,
-                status: 607,
-              });
+            res.status(607).json({
+              message: `Expected pole \`north\` and \`south\` but got \`${pole}\` instead`,
+              status: 607,
+            });
           }
         } catch (err) {
           res.status(500).json({ error: err });
