@@ -43,9 +43,33 @@
       .footer::selection {
         color: rgb(0, 242, 255);
       }
+      .poleInput {
+        transition: all 1s ease-in-out;
+      }
+      .poleInput:hover {
+        transition: all 1s ease-in-out;
+        cursor: pointer;
+        width: 12%;
+      }
+      .poleInput:focus {
+        cursor: auto;
+        width: 12%;
+        transition: all 1s;
+      }
     </style>
   </head>
   <body>
+    <form action="/example/season" method="get">
+      <div class="form-item">
+        <label for="pole" class="pole">Pole: </label>
+        <input
+          class="poleInput"
+          placeholder="Enter your pole here"
+          type="text"
+          name="pole"
+        />
+      </div>
+    </form>
     <h1 class="text">Current Season: <a>a</a></h1>
     <h2 class="season-now">season</h2>
     <h3 class="footer">FOOTER</h3>
