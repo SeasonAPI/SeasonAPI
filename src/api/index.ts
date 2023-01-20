@@ -1,6 +1,6 @@
 import { exec } from "child_process";
 import * as express from "express";
-import { Express, Request, Response, RequestHandler } from "express";
+import { Request, Response } from "express";
 import * as syc from "syc-logger";
 import * as mongoose from "mongoose";
 import * as chalk from "chalk";
