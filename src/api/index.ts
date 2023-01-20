@@ -1,6 +1,6 @@
 import { exec } from "child_process";
 import * as express from "express";
-import { Express, Request, Response } from "express";
+import { Express, Request, Response, RequestHandler } from "express";
 import * as syc from "syc-logger";
 import * as mongoose from "mongoose";
 import * as chalk from "chalk";
@@ -8,6 +8,7 @@ import * as cron from "node-cron";
 import * as path from "path";
 import fetch from "node-fetch";
 import {
+  getSeasonType,
   getCurrentSeasonBDINNL,
   generateApiKey,
   getCurrentSeason,
@@ -19,6 +20,7 @@ import {
   getTime,
 } from "../index";
 require("dotenv").config();
+
 import * as fs from "fs";
 import * as cheerio from "cheerio";
 const spawn = require("child_process").spawn;
@@ -26,9 +28,9 @@ const spawn = require("child_process").spawn;
 import * as forever from "forever-monitor";
 
 const app = express();
-const API = () => {
+(function () {
   try {
-    app.get("/", (req: any, res: any) => {
+    app.get("/", (req: Request, res: Response) => {
       const mainFilePath = path.join(__dirname, "../../", "main.html");
       res.sendFile(mainFilePath);
       res.status(200);
@@ -62,7 +64,7 @@ const API = () => {
 
     const ApiKey = mongoose.model("ApiKey", apiKeySchema);
 
-    app.get("/api/keys", (req: any, res: any) => {
+    app.get("/api/keys", (req: Request, res: Response) => {
       const filePath = path.join(__dirname, "../../", "index.html");
       res.sendFile(filePath);
     });
@@ -106,10 +108,22 @@ const API = () => {
         const pole = req.query.pole;
         try {
           if (pole === "north") {
-            if (country === "bd" || country === "in" || country === "nl") {
+            if (
+              country === "bd" ||
+              country === "in" ||
+              country === "nl" ||
+              country === "sri" ||
+              country === "myn" ||
+              country === "bangladesh" ||
+              country === "india" ||
+              country === "nepal" ||
+              country === "sri lanka" ||
+              country === "myanmar"
+            ) {
               res
                 .json({
                   season: `${getCurrentSeasonBDINNL()}`,
+                  type: `${getSeasonType()}`,
                   date: `${getDate}`,
                   month: `${getMonthName}`,
                   day: `${getDayName}`,
@@ -134,7 +148,7 @@ const API = () => {
             res.status(200);
           } else if (pole === "south") {
             res.json({
-              season: `${getCurrentSeason()}`,
+              season: `${getSouthPoleSeason()}`,
               date: `${getDate}`,
               month: `${getMonthName}`,
               day: `${getDayName}`,
@@ -155,85 +169,120 @@ const API = () => {
         }
       }
     );
-    app.get("/api/get-season/custom", validateApiKey, (req: any, res: any) => {
-      const currentMonth = req.query.month;
+    app.get(
+      "/api/get-season/custom",
+      validateApiKey,
+      (req: any, res: Response) => {
+        const currentMonth = req.query.month;
 
-      let season;
+        let season;
 
-      const country = req.query.country;
-      try {
-        if (country === "bd" || country === "in" || country === "nl") {
-          let season;
+        const country = req.query.country;
+        try {
+          if (country === "bd" || country === "in" || country === "nl") {
+            let season;
 
-          if (currentMonth >= 3 && currentMonth <= 4) {
-            season = "spring";
-          } else if (currentMonth >= 5 && currentMonth <= 6) {
-            season = "summer";
-          } else if (currentMonth >= 7 && currentMonth <= 8) {
-            season = "rainy";
-          } else if (currentMonth >= 9 && currentMonth <= 10) {
-            season = "autumn";
-          } else if (currentMonth >= 11 && currentMonth < 12) {
-            season = "late autumn";
+            if (currentMonth >= 3 && currentMonth <= 4) {
+              season = "spring";
+            } else if (currentMonth >= 5 && currentMonth <= 6) {
+              season = "summer";
+            } else if (currentMonth >= 7 && currentMonth <= 8) {
+              season = "rainy";
+            } else if (currentMonth >= 9 && currentMonth <= 10) {
+              season = "autumn";
+            } else if (currentMonth >= 11 && currentMonth < 12) {
+              season = "late autumn";
+            } else {
+              season = "winter";
+            }
+            let currentSeason =
+              season.charAt(0).toUpperCase() + season.slice(1);
+            res
+              .json({
+                season: `${currentSeason}`,
+                date: `${getDate}`,
+                month: `${getMonthName}`,
+                day: `${getDayName}`,
+                year: `${getCurrentYear}`,
+                footer: `Season provided by Sayln SeasonAPI`,
+              })
+              .status(200);
+          } else if (!country) {
+            res.status(601).json({ error: "No country provided", status: 400 });
           } else {
-            season = "winter";
-          }
-          let currentSeason = season.charAt(0).toUpperCase() + season.slice(1);
-          res
-            .json({
+            if (currentMonth >= 3 && currentMonth <= 5) {
+              season = "spring";
+            } else if (currentMonth >= 6 && currentMonth <= 8) {
+              season = "summer";
+            } else if (currentMonth >= 9 && currentMonth <= 11) {
+              season = "autumn";
+            } else {
+              season = "winter";
+            }
+            let currentSeason =
+              season.charAt(0).toUpperCase() + season.slice(1);
+            res.json({
               season: `${currentSeason}`,
               date: `${getDate}`,
               month: `${getMonthName}`,
               day: `${getDayName}`,
               year: `${getCurrentYear}`,
               footer: `Season provided by Sayln SeasonAPI`,
-            })
-            .status(200);
-        } else if (!country) {
-          res.status(601).json({ error: "No country provided", status: 400 });
-        } else {
-          if (currentMonth >= 3 && currentMonth <= 5) {
-            season = "spring";
-          } else if (currentMonth >= 6 && currentMonth <= 8) {
-            season = "summer";
-          } else if (currentMonth >= 9 && currentMonth <= 11) {
-            season = "autumn";
-          } else {
-            season = "winter";
+            });
+            res.status(200);
           }
-          let currentSeason = season.charAt(0).toUpperCase() + season.slice(1);
-          res.json({
-            season: `${currentSeason}`,
-            date: `${getDate}`,
-            month: `${getMonthName}`,
-            day: `${getDayName}`,
-            year: `${getCurrentYear}`,
-            footer: `Season provided by Sayln SeasonAPI`,
-          });
-          res.status(200);
+        } catch (err) {
+          res.status(500).json({ error: err });
         }
-      } catch (err) {
-        res.status(500).json({ error: err });
       }
-    });
+    );
     app.get("/docs", (req: Request, res: Response) => {
       const docsPath = path.join(__dirname, "../../", "docs.html");
       res.sendFile(docsPath);
       res.status(200);
     });
     app.get("/example", async (req: Request, res: Response) => {
-      const response = await fetch(
-        `https://seasonapi.iamsohom829.repl.co/api/get-current-season/?api_key=${process.env.APIKEY}&country=bd`
-      );
-      const body = await response.json();
-      fs.readFile("example.html", "utf8", (err, data) => {
-        if (err) throw err;
-        // manipulate the HTML using cheerio
-        let $ = cheerio.load(data);
-        $("h2").text(`${body.season}`);
-        $("h3").text(`${body.footer}`);
-        res.send($.html());
-      });
+      const Path = path.join(__dirname, "../../", "example.html");
+      res.sendFile(Path);
+    });
+    app.get("/example/season", async (req: Request, res: Response) => {
+      try {
+        const queryPole = req.query.pole;
+        const stringPole = queryPole?.toString();
+        const pole = stringPole?.toLowerCase();
+        const response = await fetch(
+          `https://seasonapi.iamsohom829.repl.co/api/get-current-season/?api_key=${process.env.APIKEY}&country=bd&pole=${pole}`
+        );
+        const body = await response.json();
+        const season = body.season;
+        const footer = body.footer;
+        if (!season && body.message) {
+          const error = body.message;
+          fs.readFile("error.html", "utf8", (err, data) => {
+            if (err) throw err;
+
+            let $ = cheerio.load(data);
+            $("h2").text(`${error}`);
+            res.send($.html());
+          });
+        } else {
+          fs.readFile("showExample.html", "utf8", (err, data) => {
+            if (err) throw err;
+            let $ = cheerio.load(data);
+            $("h2").text(`${season}`);
+            $("h3").text(`${footer}`);
+            res.send($.html());
+          });
+        }
+      } catch (error) {
+        fs.readFile("error.html", "utf8", (err, data) => {
+          if (err) throw err;
+
+          let $ = cheerio.load(data);
+          $("h2").text(`${error}`);
+          res.send($.html());
+        });
+      }
     });
     let PORT = 3069 || 3070 || 3071 || 3072;
     let server = app.listen(PORT, () => {
@@ -296,7 +345,6 @@ const API = () => {
     console.log("\n");
     console.log("\n");
     console.log("\n");
+    process.exit();
   }
-};
-
-export { API };
+})();

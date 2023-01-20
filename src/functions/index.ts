@@ -3,6 +3,7 @@ export {
   getSouthPoleSeason,
   getCurrentSeason,
 } from "./season";
+export { getSeasonType } from "./season-type";
 export {
   getTime,
   getMonthName,
