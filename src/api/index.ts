@@ -30,14 +30,25 @@ import * as forever from "forever-monitor";
 
 const app = express();
 app.use(cors());
+app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "../../", "client/build")));
+// app.set("build", path.join(__dirname, "../../", "client/build/index.html"));
 
 (function () {
   try {
-    app.get("/", (req: Request, res: Response) => {
-      const mainFilePath = path.join(__dirname, "../../", "main.html");
-      res.sendFile(mainFilePath);
-      res.status(200);
-    });
+    app.get(
+      ["/", "/docs", "/example", "/example/season", "/api/keys"],
+      (req: Request, res: Response) => {
+        const mainFilePath = path.join(
+          __dirname,
+          "../../",
+          "client/build/index.html"
+        );
+        res.sendFile(mainFilePath);
+        res.status(200);
+      }
+    );
     mongoose.set("strictQuery", false);
     mongoose
       .connect(`${process.env.MongoDB}`)
@@ -66,11 +77,6 @@ app.use(cors());
     });
 
     const ApiKey = mongoose.model("ApiKey", apiKeySchema);
-
-    app.get("/api/keys", (req: Request, res: Response) => {
-      const filePath = path.join(__dirname, "../../", "index.html");
-      res.sendFile(filePath);
-    });
 
     app.post("/api/keys", (req: any, res: any) => {
       const key = generateApiKey();
@@ -104,7 +110,7 @@ app.use(cors());
     };
 
     app.get(
-      "/api/get-current-season",
+      "/full-api/get-current-season",
       validateApiKey,
       (req: Request, res: Response) => {
         const country = req.query.country;
@@ -137,7 +143,7 @@ app.use(cors());
             } else if (!country) {
               res
                 .status(601)
-                .json({ error: "No country provided", status: 400 });
+                .json({ error: "No country provided", status: 601 });
             } else {
               res.json({
                 season: `${getCurrentSeason()}`,
@@ -173,7 +179,7 @@ app.use(cors());
       }
     );
     app.get(
-      "/api/get-season/custom",
+      "/full-api/get-season/custom",
       validateApiKey,
       (req: any, res: Response) => {
         const currentMonth = req.query.month;
@@ -239,54 +245,6 @@ app.use(cors());
         }
       }
     );
-    app.get("/docs", (req: Request, res: Response) => {
-      const docsPath = path.join(__dirname, "../../", "docs.html");
-      res.sendFile(docsPath);
-      res.status(200);
-    });
-    app.get("/example", async (req: Request, res: Response) => {
-      const Path = path.join(__dirname, "../../", "example.html");
-      res.sendFile(Path);
-    });
-    app.get("/example/season", async (req: Request, res: Response) => {
-      try {
-        const queryPole = req.query.pole;
-        const stringPole = queryPole?.toString();
-        const pole = stringPole?.toLowerCase();
-        const response = await fetch(
-          `https://seasonapi.iamsohom829.repl.co/api/get-current-season/?api_key=${process.env.APIKEY}&country=bd&pole=${pole}`
-        );
-        const body = await response.json();
-        const season = body.season;
-        const footer = body.footer;
-        if (!season && body.message) {
-          const error = body.message;
-          fs.readFile("error.html", "utf8", (err, data) => {
-            if (err) throw err;
-
-            let $ = cheerio.load(data);
-            $("h2").text(`${error}`);
-            res.send($.html());
-          });
-        } else {
-          fs.readFile("showExample.html", "utf8", (err, data) => {
-            if (err) throw err;
-            let $ = cheerio.load(data);
-            $("h2").text(`${season}`);
-            $("h3").text(`${footer}`);
-            res.send($.html());
-          });
-        }
-      } catch (error) {
-        fs.readFile("error.html", "utf8", (err, data) => {
-          if (err) throw err;
-
-          let $ = cheerio.load(data);
-          $("h2").text(`${error}`);
-          res.send($.html());
-        });
-      }
-    });
     let PORT = 3069 || 3070 || 3071 || 3072;
     let server = app.listen(PORT, () => {
       console.log(
