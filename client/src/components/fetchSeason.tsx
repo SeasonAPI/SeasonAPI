@@ -17,7 +17,7 @@ const FetchSeason: FC = (props) => {
   const pole = Pole?.toLowerCase();
 
   const { data, error } = useSWR(
-    `https://seasonapi.iamsohom829.repl.co/api/get-current-season/?api_key=da768dcebb706dd028da555a79308766ece0ef364641115ed6f1be9b96cf406c&country=bd&pole=${pole}`,
+    `https://seasonapi.iamsohom829.repl.co/full-api/get-current-season/?api_key=da768dcebb706dd028da555a79308766ece0ef364641115ed6f1be9b96cf406c&country=bd&pole=${pole}`,
     fetcher,
     { suspense: true }
   );
