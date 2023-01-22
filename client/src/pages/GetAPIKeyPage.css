@@ -1,0 +1,43 @@
+.text1 {
+  color: tomato;
+  text-align: center;
+}
+.text2 {
+  color: tomato;
+  text-align: center;
+}
+.Label1 {
+  margin-right: 10px;
+  padding-left: 10px;
+  color: tomato;
+  text-align: center;
+}
+.Input1 {
+  padding: 10px;
+  margin: 10px 0;
+  border: 0;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  color: tomato;
+}
+.Input1:focus {
+  border: none;
+  border-color: white;
+  border-style: none;
+}
+.Button1 {
+  background-color: orangered;
+  margin-left: 3.2cm;
+  color: white;
+  padding: 1% 20px 1% 20px;
+  border-color: white;
+  border-style: none;
+  border-radius: 1rem;
+  text-align: center;
+  transition: 1s;
+}
+.Button1:hover {
+  transition: 1s;
+  cursor: pointer;
+  box-shadow: 0 0 5px 4px rgba(195, 55, 5, 0.504);
+}
