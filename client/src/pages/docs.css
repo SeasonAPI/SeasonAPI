@@ -1,0 +1,62 @@
+.docs-page h1 {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  color: tomato;
+}
+.docs-page h1::selection {
+  background-color: tomato;
+  color: white;
+}
+.docs-page h1::-moz-selection {
+  background-color: tomato;
+  color: white;
+}
+.docs-page h2 {
+  color: crimson;
+  font-size: 1.5em;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+.docs-page h2::selection {
+  background-color: crimson;
+  color: white;
+}
+.docs-page h2::-moz-selection {
+  background-color: crimson;
+  color: white;
+}
+.docs-page .api-section {
+  margin-bottom: 2em;
+}
+.docs-page .endpoint {
+  margin-bottom: 1em;
+}
+.docs-page .endpoint-name {
+  color: cornflowerblue;
+  font-weight: bold;
+}
+.docs-page .endpoint-name::selection {
+  background-color: cornflowerblue;
+  color: white;
+}
+.docs-page .endpoint-name::-moz-selection {
+  background-color: cornflowerblue;
+  color: white;
+}
+.docs-page .endpoint-description {
+  margin-bottom: 0.5em;
+}
+.docs-page .endpoint-parameters {
+  margin-top: 0.5cm;
+  margin-bottom: 0.5em;
+}
+.docs-page .endpoint-parameters th,
+.endpoint-parameters td {
+  padding: 0.5em;
+}
+.docs-page .endpoint-parameters th {
+  text-align: left;
+}
+.docs-page .endpoint-parameters td {
+  text-align: right;
+}
