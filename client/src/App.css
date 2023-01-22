@@ -1,0 +1,179 @@
+body {
+  overflow: hidden;
+}
+a {
+  text-decoration: none;
+}
+.sapi-text {
+  color: rgb(255, 128, 217);
+  padding-top: 5cm;
+  font-size: 60px;
+  margin-bottom: 0.5em;
+}
+.sapi-desc {
+  color: rgb(255, 121, 97);
+  top: 7.2cm;
+  position: absolute;
+}
+.gapikey {
+  margin-top: 0.5cm;
+  background-color: #f044d1;
+  border-radius: 1rem;
+  border-style: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition: 0.5s;
+}
+.gapikey:hover {
+  cursor: pointer;
+  transition: 0.5s;
+  box-shadow: 0px 0px 10px rgba(255, 144, 144, 0.933);
+}
+.docs {
+  margin-top: 0.5cm;
+  background-color: #ff3300;
+  border-radius: 1rem;
+  border-style: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition: 0.5s;
+}
+.docs:hover {
+  cursor: pointer;
+  transition: 0.5s;
+  box-shadow: 0px 0px 10px rgba(255, 61, 2, 0.933);
+}
+.demo {
+  margin-top: 0.5cm;
+  background-color: #44f069;
+  border-radius: 1rem;
+  border-style: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition: 0.5s;
+}
+.demo:hover {
+  cursor: pointer;
+  transition: 0.5s;
+  box-shadow: 0px 0px 10px rgba(22, 186, 22, 0.933);
+}
+.img1 {
+  position: absolute;
+  left: 55%;
+  opacity: 50%;
+  width: 70rem;
+  top: 40%;
+}
+.img2 {
+  position: absolute;
+  right: 80%;
+  opacity: 50%;
+  width: 30rem;
+  bottom: 70%;
+}
+@media screen and (max-width: 768px) {
+  body {
+    position: fixed;
+    overflow: hidden;
+  }
+  .sapi-text {
+    padding-top: 3cm;
+  }
+  .sapi-desc {
+    top: 5.2cm;
+  }
+  .img1 {
+    position: absolute;
+    left: 50%;
+    opacity: 50%;
+    width: 70rem;
+  }
+  .img2 {
+    position: absolute;
+    right: 60%;
+    opacity: 50%;
+    width: 30rem;
+    bottom: 70%;
+  }
+}
+@media only screen and (max-width: 600px) {
+  body {
+    position: fixed;
+    overflow: hidden;
+  }
+  .sapi-desc {
+    top: 5.2cm;
+    bottom: 1cm;
+  }
+}
+@media only screen and (max-width: 400px) {
+  body {
+    position: fixed;
+    overflow: hidden;
+  }
+  .sapi-desc {
+    top: 5.2cm;
+    bottom: 1cm;
+  }
+  .gapikey {
+    position: absolute;
+    top: 8.7cm;
+  }
+  .docs {
+    position: absolute;
+    top: 8.7cm;
+    left: 5cm;
+  }
+  .demo {
+    position: absolute;
+    top: 10cm;
+  }
+  .img2 {
+    right: 40%;
+  }
+  .img1 {
+    left: 65%;
+  }
+}
+@media screen and (max-width: 992px) {
+  body {
+    position: fixed;
+    overflow: hidden;
+  }
+  .sapi-desc {
+    top: 7cm;
+    bottom: 1cm;
+  }
+  .gapikey {
+    position: absolute;
+    top: 10cm;
+  }
+  .docs {
+    position: absolute;
+    top: 10cm;
+    left: 5cm;
+  }
+  .demo {
+    position: absolute;
+    top: 13cm;
+  }
+  .img2 {
+    bottom: 60%;
+    right: 30%;
+  }
+  .img1 {
+    left: 150%;
+  }
+}
