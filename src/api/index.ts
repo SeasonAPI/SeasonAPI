@@ -20,6 +20,7 @@ import {
   getTime,
 } from "../index";
 require("dotenv").config();
+import * as cors from "cors";
 
 import * as fs from "fs";
 import * as cheerio from "cheerio";
@@ -28,6 +29,8 @@ const spawn = require("child_process").spawn;
 import * as forever from "forever-monitor";
 
 const app = express();
+app.use(cors());
+
 (function () {
   try {
     app.get("/", (req: Request, res: Response) => {
