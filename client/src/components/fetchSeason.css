@@ -1,0 +1,32 @@
+.SeasonComponent::selection {
+  color: white;
+}
+.SeasonComponent .text::selection {
+  color: rgb(13, 209, 13);
+}
+.SeasonComponent .text {
+  font-size: 50px;
+  display: inline-block;
+  color: tomato;
+}
+.SeasonComponent .season-now {
+  color: rgb(13, 209, 13);
+  display: inline-block;
+  font-size: 50px;
+}
+.SeasonComponent .season-now::selection {
+  color: tomato;
+}
+.SeasonComponent a {
+  visibility: hidden;
+}
+.SeasonComponent a::selection {
+  color: white;
+}
+.SeasonComponent .footer {
+  color: rgb(0, 255, 145);
+  font-size: 30px;
+}
+.SeasonComponent .footer::selection {
+  color: rgb(0, 242, 255);
+}
