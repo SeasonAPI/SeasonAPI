@@ -1,0 +1,13 @@
+.poleInput {
+  transition: all 1s ease-in-out;
+}
+.poleInput:hover {
+  transition: all 1s ease-in-out;
+  cursor: pointer;
+  width: 12%;
+}
+.poleInput:focus {
+  cursor: auto;
+  width: 12%;
+  transition: all 1s;
+}
