@@ -8,6 +8,9 @@ import * as cron from "node-cron";
 import * as path from "path";
 import fetch from "node-fetch";
 import {
+  getLong,
+  getLat,
+  getCountry,
   getSeasonType,
   getCurrentSeasonBDINNL,
   generateApiKey,
@@ -21,12 +24,11 @@ import {
 } from "../index";
 require("dotenv").config();
 import * as cors from "cors";
-
 import * as fs from "fs";
 import * as cheerio from "cheerio";
 const spawn = require("child_process").spawn;
-// const forever = require('forever-monitor');
 import * as forever from "forever-monitor";
+import { map } from "cheerio/lib/api/traversing";
 
 const app = express();
 app.use(cors());
@@ -108,13 +110,55 @@ app.use(express.static(path.join(__dirname, "../../", "client/build")));
         next();
       });
     };
+    const latLongMap = new Map();
+    const countryMap = new Map();
+
+    app.get("/full-api/get-current-season", async (req, res) => {
+      const pole = req.query.pole;
+      const apiKey = req.query.api_key;
+      if (!apiKey) {
+        return res.json({ message: `No API Key is provided. ` });
+      } else if (!pole) {
+        return res.json({ message: `No pole provided.` }).status(607);
+      }
+      const latitude = await getLat();
+      const longitude = await getLong();
+      latLongMap.set(`latitude`, latitude);
+      latLongMap.set(`longitude`, longitude);
+
+      const long = latLongMap.get(`longitude`);
+      const lat = latLongMap.get(`latitude`);
+      const country = await getCountry();
+      countryMap.set(`country`, country);
+      res.redirect(
+        `/full-api/get-current-season/ogl/?api_key=${apiKey}&long=${long}&lat=${lat}&pole=${pole}&country=${countryMap.get(
+          `country`
+        )}`
+      );
+    });
 
     app.get(
-      "/full-api/get-current-season",
+      "/full-api/get-current-season/ogl/",
       validateApiKey,
-      (req: Request, res: Response) => {
+      async (req: Request, res: Response) => {
         const country = req.query.country;
         const pole = req.query.pole;
+        const lat = req.query.lat;
+        const lon = req.query.long;
+        const url = `http://climateapi.scottpinkelman.com/api/v1/location/${lat}/${lon}`;
+        const resp = await fetch(url);
+        const data = await resp.json();
+        const koppen_geiger_zone = data.return_values[0].koppen_geiger_zone;
+        const climate_zone = data.return_values[0].zone_description;
+
+        if (!lat || !lon) {
+          return res
+            .json({
+              message: `Lat long is required `,
+              tip: `Go to /full-api/get-current-season to get your latitude and longitude`,
+            })
+            .status(609);
+        }
         try {
           if (pole === "north") {
             if (
@@ -137,6 +181,8 @@ app.use(express.static(path.join(__dirname, "../../", "client/build")));
                   month: `${getMonthName}`,
                   day: `${getDayName}`,
                   year: `${getCurrentYear}`,
+                  koppen_geiger_zone: `${koppen_geiger_zone}`,
+                  climate_zone: `${climate_zone}`,
                   footer: `Season provided by Sayln SeasonAPI`,
                 })
                 .status(200);
@@ -151,6 +197,8 @@ app.use(express.static(path.join(__dirname, "../../", "client/build")));
                 month: `${getMonthName}`,
                 day: `${getDayName}`,
                 year: `${getCurrentYear}`,
+                koppen_geiger_zone: `${koppen_geiger_zone}`,
+                climate_zone: `${climate_zone}`,
                 footer: `Season provided by Sayln SeasonAPI`,
               });
             }
