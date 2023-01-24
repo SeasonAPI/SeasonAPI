@@ -13,11 +13,13 @@
   text-align: center;
 }
 .Input1 {
+  position: relative;
   padding: 10px;
   margin: 10px 0;
   border: 0;
   box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
   border-radius: 10px;
+  font-family: monospace;
   color: tomato;
 }
 .Input1:focus {

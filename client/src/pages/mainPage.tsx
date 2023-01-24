@@ -1,9 +1,11 @@
 import "../App.css";
+import NavigationBar from "../components/navigation";
 
 function MainPage() {
   return (
     <div className="App">
       <div className="contents">
+        <NavigationBar />
         <div className="imgs">
           <img
             className="img1"

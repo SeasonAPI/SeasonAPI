@@ -1,9 +1,13 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import NavigationBar from "../components/navigation";
 import "./GetAPIKeyPage.css";
 
 const GetAPIKeyPage: FC = (props) => {
+  const [inputValue, setInputValue] = useState("");
+
   return (
     <div className="GetAPIKeyPage">
+      <NavigationBar />
       <h1 className="text1">SeasonAPI Key Generator</h1>
       <p className="text2">
         Fill the form below and click the button to get yourself a nice valid

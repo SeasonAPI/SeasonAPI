@@ -1,4 +1,5 @@
 import { FC } from "react";
+import NavigationBar from "../components/navigation";
 import "./docs.css";
 
 const DocumentationPage: FC = (props) => {
@@ -9,6 +10,7 @@ const DocumentationPage: FC = (props) => {
   return (
     <div className="docs-page">
       <div className="contents">
+        <NavigationBar />
         <h1>API Documentation</h1>
         <div className="api-section">
           <h2>Endpoints</h2>
