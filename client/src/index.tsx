@@ -9,6 +9,7 @@ import ExamplePage from "./pages/ExamplePage";
 import ShowExample from "./pages/ShowExample";
 import GetAPIKeyPage from "./pages/GetAPIKeyPage";
 import DocumentationPage from "./pages/docs";
+import FeedbackPage from "./pages/feedback";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -22,6 +23,7 @@ root.render(
         <Route path="/example/season" element={<ShowExample />}></Route>
         <Route path="/api/keys" element={<GetAPIKeyPage />}></Route>
         <Route path="/docs" element={<DocumentationPage />}></Route>
+        <Route path="/feedback" element={<FeedbackPage />}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
