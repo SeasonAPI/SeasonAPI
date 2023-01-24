@@ -1,0 +1,29 @@
+.caret {
+  position: relative;
+  left: 0;
+  font-family: monospace;
+  transition: left 0.1s ease-out, visibility 0.5s ease-out;
+  animation: blink 1s ease-in-out infinite;
+}
+@keyframes blink {
+  0% {
+    visibility: hidden;
+  }
+  50% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
+.cursor-caret {
+  position: absolute;
+  left: 0;
+}
+
+.caret.hidden {
+  visibility: hidden;
+}
+.caret.visible {
+  visibility: visible;
+}

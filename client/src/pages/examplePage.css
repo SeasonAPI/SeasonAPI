@@ -1,13 +1,18 @@
 .poleInput {
+  position: relative;
+  padding: 10px;
+  margin: 10px 0;
+  border: 0;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  color: tomato;
+  font-family: monospace;
   transition: all 1s ease-in-out;
 }
-.poleInput:hover {
-  transition: all 1s ease-in-out;
-  cursor: pointer;
-  width: 12%;
-}
+
 .poleInput:focus {
-  cursor: auto;
-  width: 12%;
-  transition: all 1s;
+  caret-color: white;
+  border: none;
+  border-color: white;
+  border-style: none;
 }
