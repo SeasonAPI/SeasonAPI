@@ -9,37 +9,9 @@ An API to get current season or season by a specified month.
 
 ## API Reference
 
-### Base URL
+### DOCS
 
-```http
-https://seasonapi.iamsohom829.repl.co/
-```
-
-### Get all items
-
-```http
-  GET /api/get-current-season
-```
-
-| Parameter | Type     | Description                                     |
-| :-------- | :------- | :---------------------------------------------- |
-| `api_key` | `string` | **Required**. Your API key                      |
-| `country` | `string` | **Required** The country you want to get season |
-
-**NOTE:** Use ISO code. e.g: Bangladesh = BD, United States of America = US.
-
-#### Get item
-
-```http
-  GET /api/get-season/?month=${month}
-```
-
-**NOTE:** Use month by it's number 1-12
-
-| Parameter | Type     | Description                                      |
-| :-------- | :------- | :----------------------------------------------- |
-| `month`   | `number` | **Required**. Number of month to fetch season    |
-| `country` | `string` | **Required**. The country you want to get season |
+Read docs from [here](https://seasonapi.sohom829.repl.co/docs)
 
 ## Features
 
@@ -58,3 +30,29 @@ See `contributing.md` for ways to get started.
 ## Authors
 
 - [@Sohom829](https://www.github.com/Sohom829)
+
+## Special Thanks
+
+People/Organizations I wanna give thanks to
+
+- [NodeJS](https://nodejs.org/en/) for making a JavaScript!
+- [Npm](https://www.npmjs.com/) for making a cool and easy package manager
+- [ExpressJS](https://expressjs.com/) For making an awesome technology for backend
+- [MongoDB](https://mongodb.com/) for making awesome json-type database
+- [ReactJS](https://reactjs.org/) for making an awesome and cool frontend library
+- [Node-Fetch](https://www.npmjs.com/package/node-fetch) for making a perfect Data-Fetcher
+- [RapidAPI](https://rapidapi.com/) for making an awesome and amazing API Hub
+- [IP-address-tracker-free](https://rapidapi.com/mark2info/api/ip-address-tracker-free/) for making an API to get current longitude and latitude also with country
+- [Climate Zone API](http://climateapi.scottpinkelman.com/) for making awesome dataset of climates
+
+## 3rd-Party important packages
+
+- [Node-Cron](https://www.npmjs.com/package/node-cron?activeTab=readme)
+- [dotenv](https://www.npmjs.com/package/dotenv?activeTab=readme)
+- [Cheerio](https://www.npmjs.com/package/cheerio?activeTab=readme)
+- [Nodemon](https://www.npmjs.com/package/nodemon?activeTab=readme)
+
+## 3rd-Party designing packages
+
+- [Chalk](https://www.npmjs.com/package/chalk?activeTab=readme)
+- [Syc-Logger](https://www.npmjs.com/package/syc-logger?activeTab=readme)
