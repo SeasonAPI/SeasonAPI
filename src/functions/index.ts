@@ -11,4 +11,5 @@ export {
   getCurrentYear,
   getDate,
 } from "./time";
+export { getLong, getLat, getCountry } from "./getLongLat";
 export { generateApiKey } from "./api";
