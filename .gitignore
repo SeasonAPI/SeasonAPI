@@ -131,3 +131,4 @@ dist
 
 # Google
 credentials.json
+.vercel

@@ -1,29 +1,26 @@
 import fetch from "node-fetch";
-require("dotenv");
-const url = "https://ip-address-tracker-free.p.rapidapi.com/rapidapi/ip";
 
-const options = {
-  method: "GET",
-  headers: {
-    "X-RapidAPI-Key": `0b10d639f3msh1cc58ee7d31b254p1ab259jsn7bab6c3bc4b8`,
-    "X-RapidAPI-Host": "ip-address-tracker-free.p.rapidapi.com",
-  },
+const getIpData = async () => {
+  const response = await fetch(
+    "https://api.ipdata.co?api-key=682732ff8f53f6701c4e49427ddf18c2366496afa159a787ff1299e7"
+  );
+  const data = await response.json();
+  return data;
 };
+
 const getLat = async () => {
-  const response = await fetch(url, options);
-  const data = await response.json();
-  return data.lat;
+  const data = await getIpData();
+  return data.latitude;
 };
+
 const getLong = async () => {
-  const response = await fetch(url, options);
-  const data = await response.json();
-  return data.lon;
+  const data = await getIpData();
+  return data.longitude;
 };
 
 const getCountry = async () => {
-  const response = await fetch(url, options);
-  const data = await response.json();
-  return data.country;
+  const data = await getIpData();
+  return data.country_name;
 };
 
 export { getLat, getLong, getCountry };
